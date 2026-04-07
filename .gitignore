@@ -1,0 +1,11 @@
+.env
+*.log
+db.sqlite3
+/staticfiles/
+/media/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env.example

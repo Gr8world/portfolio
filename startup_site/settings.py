@@ -79,27 +79,28 @@ WSGI_APPLICATION = "startup_site.wsgi.application"
 # DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 # Or set DATABASE_URL with: postgresql://user:password@localhost:5432/dbname
 
+
 DB_ENGINE = os.getenv("DB_ENGINE", "django.db.backends.sqlite3")
 
 if DB_ENGINE == "django.db.backends.postgresql":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DB_NAME", "startup_site"),
-            "USER": os.getenv("DB_USER", "postgres"),
-            "PASSWORD": os.getenv("DB_PASSWORD", ""),
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": os.getenv("DB_HOST", "localhost"),
             "PORT": os.getenv("DB_PORT", "5432"),
         }
     }
 else:
-    # Default SQLite for development
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -137,27 +138,14 @@ LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/dashboard/login/"
 
 # # Email configuration (SMTP Gmail)
-# EMAIL_BACKEND = os.getenv(
-#     "EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend"
-# )
-# EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-# EMAIL_PORT = os.getenv("EMAIL_PORT", "587")
-# EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() in ("true", "1", "yes")
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "your-email@gmail.com")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "your-app-password")
-# DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-
-
-# Email Configuration - Gmail SMTP
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "akhtar.shoaib2012@gmail.com"
-# "vnql ppwi gmqy tipu"  # App password from Google
-EMAIL_HOST_PASSWORD = "vnql ppwi gmqy tipu"  # App password from Google
-DEFAULT_FROM_EMAIL = "Billing Desktop <akhtar.shoaib2012@gmail.com>"
-SERVER_EMAIL = "akhtar.shoaib2012@gmail.com"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+SERVER_EMAIL = os.getenv("EMAIL_HOST_USER", "")
 # CSRF Cookie settings
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
