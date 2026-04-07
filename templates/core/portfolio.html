@@ -1,0 +1,197 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Portfolio - {{ site_config.site_name }}{% endblock %}
+
+{% block content %}
+<section class="pt-32 pb-20 hero-gradient">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center" data-aos="fade-up">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">{{ portfolio_page.hero_title }}</h1>
+            <p class="text-xl text-white/80 max-w-2xl mx-auto">{{ portfolio_page.hero_description }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="py-8 bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up">
+            <button class="filter-btn active bg-blue-600 text-white px-6 py-2 rounded-full font-medium" data-filter="all">{{ portfolio_page.filter_all_label }}</button>
+            {% for category in categories %}
+            <button class="filter-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-300" data-filter="{{ category.slug }}">{{ category.name }}</button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if portfolio_profile.is_visible %}
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[320px_minmax(0,1fr)] items-center">
+            <div class="relative" data-aos="fade-right">
+                <div class="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-blue-500/20 via-cyan-400/20 to-purple-500/20 blur-2xl"></div>
+                <div class="relative overflow-hidden rounded-[2rem] bg-slate-950 shadow-2xl">
+                    {% if portfolio_profile.photo %}
+                    <img src="{{ portfolio_profile.photo.url }}" alt="{{ portfolio_profile.name|default:site_config.author_name }}" class="h-full w-full object-cover">
+                    {% else %}
+                    <div class="flex h-[380px] items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-700">
+                        <i class="fas fa-user-tie text-7xl text-white/70"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div data-aos="fade-left">
+                <span class="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+                    {{ portfolio_profile.section_badge }}
+                </span>
+                <h2 class="mt-5 text-3xl font-bold text-slate-900 md:text-5xl">
+                    {{ portfolio_profile.name|default:site_config.author_name }}
+                </h2>
+                {% if portfolio_profile.role %}
+                <p class="mt-3 text-lg font-semibold text-blue-600">{{ portfolio_profile.role }}</p>
+                {% endif %}
+                {% if portfolio_profile.introduction %}
+                <p class="mt-6 text-lg leading-8 text-slate-600">{{ portfolio_profile.introduction }}</p>
+                {% endif %}
+                {% if portfolio_profile.experience_summary %}
+                <p class="mt-4 text-base leading-7 text-slate-500">{{ portfolio_profile.experience_summary }}</p>
+                {% endif %}
+
+                <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div class="rounded-3xl bg-slate-50 p-5 ring-1 ring-slate-200">
+                        <div class="text-3xl font-bold text-slate-900">{{ portfolio_profile.years_experience }}+</div>
+                        <div class="mt-2 text-sm font-medium text-slate-500">Years Experience</div>
+                    </div>
+                    <div class="rounded-3xl bg-slate-50 p-5 ring-1 ring-slate-200">
+                        <div class="text-3xl font-bold text-slate-900">{{ portfolio_profile.projects_completed }}+</div>
+                        <div class="mt-2 text-sm font-medium text-slate-500">Projects Completed</div>
+                    </div>
+                    <div class="rounded-3xl bg-slate-50 p-5 ring-1 ring-slate-200">
+                        <div class="text-3xl font-bold text-slate-900">{{ portfolio_profile.happy_clients }}+</div>
+                        <div class="mt-2 text-sm font-medium text-slate-500">Happy Clients</div>
+                    </div>
+                </div>
+
+                {% if portfolio_profile.skills_list %}
+                <div class="mt-8 flex flex-wrap gap-3">
+                    {% for skill in portfolio_profile.skills_list %}
+                    <span class="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if portfolio_profile.location or portfolio_profile.email or portfolio_profile.phone %}
+                <div class="mt-8 flex flex-wrap gap-6 text-sm text-slate-600">
+                    {% if portfolio_profile.location %}
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-location-dot text-blue-600"></i>
+                        <span>{{ portfolio_profile.location }}</span>
+                    </div>
+                    {% endif %}
+                    {% if portfolio_profile.email %}
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-envelope text-blue-600"></i>
+                        <span>{{ portfolio_profile.email }}</span>
+                    </div>
+                    {% endif %}
+                    {% if portfolio_profile.phone %}
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone text-blue-600"></i>
+                        <span>{{ portfolio_profile.phone }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-blue-700">
+                        {{ portfolio_profile.primary_button_text }}
+                    </a>
+                    <a href="{% url 'services' %}" class="inline-flex items-center justify-center rounded-full border-2 border-slate-300 px-8 py-3 font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50">
+                        {{ portfolio_profile.secondary_button_text }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <div class="project-card relative group rounded-2xl overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00" data-category="{% if project.category %}{{ project.category.slug }}{% else %}uncategorized{% endif %}">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-64 object-cover">
+                {% else %}
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 h-64 flex items-center justify-center">
+                    <i class="fas fa-briefcase text-6xl text-white/50"></i>
+                </div>
+                {% endif %}
+                <div class="project-overlay absolute inset-0 bg-gradient-to-t from-blue-600/90 to-purple-600/90 opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-center p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">{{ project.title }}</h3>
+                        <p class="text-white/80 text-sm mb-2">{{ project.client_name }}</p>
+                        <p class="text-white/80 text-sm mb-4">{{ project.description|truncatewords:20 }}</p>
+                        <div class="flex flex-wrap justify-center gap-2 mb-4">
+                            {% for tech in project.technologies_list %}
+                            <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" rel="noreferrer" class="inline-block bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                            View Project
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-2xl p-8 shadow-lg text-center text-gray-500">
+                Add projects from the admin panel to populate your portfolio.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-20 hero-gradient">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-aos="fade-up">{{ portfolio_page.cta_title }}</h2>
+        <p class="text-xl text-white/80 mb-8" data-aos="fade-up" data-aos-delay="100">{{ portfolio_page.cta_description }}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+            <a href="{% url 'contact' %}" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                {{ portfolio_page.cta_primary_text }}
+            </a>
+            <a href="{% url 'contact' %}" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors">
+                {{ portfolio_page.cta_secondary_text }}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.classList.remove('bg-blue-600', 'text-white');
+                button.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            this.classList.remove('bg-gray-200', 'text-gray-700');
+            this.classList.add('bg-blue-600', 'text-white');
+
+            const filter = this.dataset.filter;
+            document.querySelectorAll('.project-card').forEach(card => {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

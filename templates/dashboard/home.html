@@ -1,0 +1,97 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+<div class="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+    <section class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Quick Stats</p>
+                <h3 class="mt-2 text-2xl font-extrabold text-slate-950">Content inventory</h3>
+            </div>
+            <span class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600">{{ stats|length }} sections</span>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {% for stat in stats %}
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-slate-500">{{ stat.label }}</span>
+                    <i class="{{ stat.icon }} text-slate-400"></i>
+                </div>
+                <div class="mt-4 text-4xl font-extrabold text-slate-950">{{ stat.count }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="rounded-3xl bg-slate-950 p-6 text-white shadow-sm">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Flow</p>
+        <h3 class="mt-2 text-2xl font-extrabold">How to use this panel</h3>
+        <div class="mt-6 space-y-4 text-sm text-slate-300">
+            <div class="rounded-2xl bg-white/5 p-4">
+                <p class="font-semibold text-white">1. Update page copy</p>
+                <p class="mt-2">Use the Page Content section for hero text, section titles, CTA buttons, and contact labels.</p>
+            </div>
+            <div class="rounded-2xl bg-white/5 p-4">
+                <p class="font-semibold text-white">2. Manage lists</p>
+                <p class="mt-2">Use Collections for services, projects, categories, team members, testimonials, pricing, and contact messages.</p>
+            </div>
+            <div class="rounded-2xl bg-white/5 p-4">
+                <p class="font-semibold text-white">3. Preview changes</p>
+                <p class="mt-2">Click View Site from the sidebar any time to confirm the public pages look right.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<section class="mt-6 grid gap-6 xl:grid-cols-2">
+    <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <div class="flex items-center justify-between gap-4">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Page Content</p>
+                <h3 class="mt-2 text-2xl font-extrabold text-slate-950">Singleton editors</h3>
+            </div>
+        </div>
+        <div class="mt-6 space-y-4">
+            {% for section in singleton_sections %}
+            <a href="{{ section.url }}" class="block rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-blue-300 hover:bg-blue-50">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-800 shadow-sm">
+                        <i class="{{ section.icon }}"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-950">{{ section.label }}</p>
+                        <p class="mt-1 text-sm text-slate-600">{{ section.description }}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <div class="flex items-center justify-between gap-4">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Collections</p>
+                <h3 class="mt-2 text-2xl font-extrabold text-slate-950">Repeatable content</h3>
+            </div>
+        </div>
+        <div class="mt-6 space-y-4">
+            {% for section in collection_sections %}
+            <a href="{{ section.url }}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-300 hover:bg-emerald-50">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-800 shadow-sm">
+                        <i class="{{ section.icon }}"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-950">{{ section.label }}</p>
+                        <p class="mt-1 text-sm text-slate-600">{{ section.description }}</p>
+                    </div>
+                </div>
+                <span class="rounded-full bg-slate-900 px-3 py-1 text-sm font-bold text-white">{{ section.count }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
